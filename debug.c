@@ -14,10 +14,6 @@ static struct pst_debug_func *func_head = NULL;
 static int func_depth = 0;
 static char indent[MAX_DEPTH*4+1];
 static FILE *debug_fp = NULL;
-#ifdef HAVE_SEMAPHORE_H
-    static sem_t* debug_mutex = NULL;
-#endif
-
 
 void pst_debug_lock()
 {

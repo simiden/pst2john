@@ -2134,7 +2134,6 @@ static int pst_process(uint64_t block_id, pst_mapi_object *list, pst_item *item,
     item->block_id = block_id;
     while (list) {
         int32_t x;
-        char time_buffer[30];
         for (x=0; x<list->count_elements; x++) {
             int32_t t;
             uint32_t ut;
@@ -4366,43 +4365,6 @@ const char*    pst_default_charset(pst_item *item, int buflen, char* result) {
            (item->pf && item->pf->charset)  ? item->pf->charset :
            "iso-8859-1";
 }
-
-
-/** Convert str to rfc2231 encoding of str
- *
- *  @param str   pointer to the mapi string of interest
- */
-void pst_rfc2231(pst_string *str) {
-    int needs = 0;
-    const int8_t *x = (int8_t *)str->str;
-    while (*x) {
-        if (*x <= 32) needs++;
-        x++;
-    }
-    int n = strlen(str->str) + 2*needs + 15;
-    char *buffer = pst_malloc(n);
-    strcpy(buffer, "utf-8''");
-    x = (int8_t *)str->str;
-    const uint8_t *y = (uint8_t *)str->str;
-    uint8_t *z = (uint8_t *)buffer;
-    z += strlen(buffer);    // skip the utf8 prefix
-    while (*y) {
-        if (*x <= 32) {
-            *(z++) = (uint8_t)'%';
-            snprintf(z, 3, "%2x", *y);
-            z += 2;
-        }
-        else {
-            *(z++) = *y;
-        }
-        x++;
-        y++;
-    }
-    *z = '\0';
-    free(str->str);
-    str->str = buffer;
-}
-
 
 /** Convert str to rfc2047 encoding of str, possibly enclosed in quotes if it contains spaces
  *
