@@ -2877,7 +2877,7 @@ static int pst_process(uint64_t block_id, pst_mapi_object *list, pst_item *item,
                     break;
                 case 0x67FF: // Extra Property Identifier (Password CheckSum)
                     LIST_COPY_STORE_INT32("Password checksum", item->message_store->pwd_chksum);
-		    printf("%s:$pst-crc32$%04x\n", fname, item->message_store->pwd_chksum);
+		    printf("%s:$pst$%04x\n", fname, item->message_store->pwd_chksum);
                     break;
                 case 0x6F02: // Secure HTML Body
                     LIST_COPY_EMAIL_BIN("Secure HTML Body", item->email->encrypted_htmlbody);
@@ -3021,7 +3021,7 @@ static int pst_process(uint64_t block_id, pst_mapi_object *list, pst_item *item,
                     break;
                 case 0x8516: // Common start
                     /* DEBUG_INFO(("Common Start Date - %s\n", pst_fileTimeToAscii((FILETIME*)list->elements[x]->data, time_buffer))); */
-                    break; 
+                    break;
                 case 0x8517: // Common end
                     /* DEBUG_INFO(("Common End Date - %s\n", pst_fileTimeToAscii((FILETIME*)list->elements[x]->data, time_buffer))); */
                     break;
