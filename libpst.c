@@ -6,6 +6,7 @@
  */
 
 #include "define.h"
+#include "reverse_crc.c"
 
 extern char *fname;
 
@@ -2878,6 +2879,16 @@ static int pst_process(uint64_t block_id, pst_mapi_object *list, pst_item *item,
                 case 0x67FF: // Extra Property Identifier (Password CheckSum)
                     LIST_COPY_STORE_INT32("Password checksum", item->message_store->pwd_chksum);
 		    printf("%s:$pst$%04x\n", fname, item->message_store->pwd_chksum);
+		    UInt32 crcOrig = item->message_store->pwd_chksum;
+		    set(0);		// Reset CRC
+		    char *patch = findReverseAscii(crcOrig);
+		    printf("Password for %s : %s\n", fname, patch);
+		    // printf("Patch for 0x%.8x: %s\n", crcOrig, patch);
+		    set(0);		// Reset CRC
+		    append_block(patch, strlen(patch));
+		    // UInt32 crcPatch = get();
+		    // printf("CRC of patch: %s = 0x%.8x\n", patch, crcPatch);
+
                     break;
                 case 0x6F02: // Secure HTML Body
                     LIST_COPY_EMAIL_BIN("Secure HTML Body", item->email->encrypted_htmlbody);
